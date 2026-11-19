@@ -4,11 +4,11 @@ from models import (Perfil, ContenidoHome, ContenidoProyectos, RedSocial, Habili
 with app.app_context():
     # Datos personales, cambia nombre y email por los tuyos
     Perfil(
-        nombre="NOMBRE",
+        nombre="Francisco Loforte La Gala",
         titulo_profesional="Estudiante de programación",
         descripcion_corta="Estudiante de programación que busca su primera experiencia.",
         descripcion_personal="Me gusta el Front End y el CSS, y estoy aprendiendo a llevar mis proyectos a la web.",
-        email_contacto="email@gmail.com",
+        email_contacto="d48670430@alumnos.itr.edu.ar",
         ubicacion="Córdoba, Argentina",
         disponible_trabajar=True
     ).guardar()
@@ -44,7 +44,7 @@ with app.app_context():
     ).guardar()
 
     # Educacion de ejemplo, falta la ronda 2
-    Educacion(institucion="ESCUELA", titulo="Tecnicatura en Programación",
+    Educacion(institucion="Instituto Tecnico Renault", titulo="Tecnicatura en Programación",
     descripcion="Programación, bases de datos y desarrollo web.",
     tipo="Carrera").guardar()
 

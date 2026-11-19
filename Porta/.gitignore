@@ -8,7 +8,9 @@ pyvenv.cfg
 # Datos privados
 config.py  
 cargarcontenido.py
+cargartecnologia.py
 admin.py
+verconexcion.py
 *.sql
 
 # Generados
