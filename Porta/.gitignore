@@ -6,7 +6,7 @@ venv/
 pyvenv.cfg
 
 # Datos privados
-config.py
+config.py  
 cargar_contenido.py
 crear_admin.py
 *.sql

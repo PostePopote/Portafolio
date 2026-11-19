@@ -4,10 +4,22 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
-import config
 from db import db
 from forms import LoginForm, ContactoForm, ProyectoForm, ContenidoHomeForm, PerfilForm
 from models import (Usuario, Proyecto, MensajeContacto, Perfil, RedSocial, ContenidoHome, ContenidoProyectos, Experiencia, Educacion, Habilidad, Tecnologia)
+
+try:
+    import config
+except ImportError:
+    config = None
+
+
+def leer(nombre, por_defecto=None):
+    # Primero busco en el entorno (Render), si no esta uso config.py (mi PC)
+    valor = os.getenv(nombre)
+    if valor:
+        return valor
+    return getattr(config, nombre, por_defecto)
 
 # Le indico a Flask donde estan los templates y los archivos estaticos
 app = Flask(
@@ -15,16 +27,23 @@ app = Flask(
     template_folder="../Front-End/templates",
     static_folder="../Front-End/static"
 )
-
 # Clave secreta, la necesita Flask-WTF y las sesiones del login
-app.config["SECRET_KEY"] = config.SECRET_KEY
+app.config["SECRET_KEY"] = leer("SECRET_KEY")
 
-# Armo la direccion de conexion a MySQL con los datos de config.py
+# Armo la direccion de conexion a MySQL, ahora con el puerto
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"mysql+mysqlconnector://{config.DB_USER}:{config.DB_PASSWORD}"
-    f"@{config.DB_HOST}/{config.DB_NAME}"
+    f"mysql+mysqlconnector://{leer('DB_USER')}:{leer('DB_PASSWORD')}"
+    f"@{leer('DB_HOST')}:{leer('DB_PORT', '3306')}/{leer('DB_NAME')}"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Pocas conexiones abiertas, porque la base gratuita permite pocas a la vez
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_size": 2,
+    "max_overflow": 0,
+    "pool_recycle": 280,
+    "pool_pre_ping": True,
+}
 
 # Tamano maximo de archivos subidos: 5 MB
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
@@ -269,4 +288,4 @@ def editar_perfil():
     return render_template("editarperfil.html", form=form)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
