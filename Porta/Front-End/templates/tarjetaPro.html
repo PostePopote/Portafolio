@@ -1,0 +1,24 @@
+<article class="proyecto-card">
+    {% if p.imagen_portada %}
+        <img class="proyecto-imagen" src="{{ url_for('static', filename=p.imagen_portada) }}" alt="{{ p.titulo }}">
+    {% else %}
+        <div class="proyecto-imagen"></div>
+    {% endif %}
+
+    <div class="proyecto-cuerpo">
+        <span class="etiqueta">{{ p.categoria }}</span>
+        <h3>{{ p.titulo }}</h3>
+        <p>{{ p.descripcion_corta }}</p>
+
+        <ul class="lista-tecnologias">
+            {% for t in p.tecnologias %}
+                <li class="tecnologia">{{ t.nombre }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="proyecto-enlaces">
+            {% if p.url_demo %}<a href="{{ p.url_demo }}" target="_blank">Demo</a>{% endif %}
+            {% if p.url_repositorio %}<a href="{{ p.url_repositorio }}" target="_blank">Código</a>{% endif %}
+        </div>
+    </div>
+</article>

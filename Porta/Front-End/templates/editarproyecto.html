@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo %}
+
+{% block titulo %}Proyecto{% endblock %}
+
+{% block contenido %}
+<section class="seccion" style="border-top:none;">
+    <h1>{{ "Editar proyecto" if proyecto.id_proyecto else "Nuevo proyecto" }}</h1>
+
+    <!-- enctype multipart es obligatorio para poder subir la imagen -->
+    <form method="POST" enctype="multipart/form-data" class="formulario">
+        {{ form.hidden_tag() }}
+
+        {{ campo(form.titulo) }}
+        {{ campo(form.categoria) }}
+        {{ campo(form.descripcion_corta) }}
+        {{ campo(form.descripcion_completa) }}
+        {{ campo(form.url_demo) }}
+        {{ campo(form.url_repositorio) }}
+
+        {% if proyecto.imagen_portada %}
+            <p class="etiqueta">Imagen actual: {{ proyecto.imagen_portada }}</p>
+        {% endif %}
+        {{ campo(form.imagen) }}
+
+        {{ campo(form.tecnologias_ids) }}
+        {{ campo(form.otras_tecnologias) }}
+        {{ campo(form.orden) }}
+        {{ campo(form.destacado) }}
+        {{ campo(form.publicado) }}
+
+        {{ form.enviar(class="boton") }}
+        <a href="{{ url_for('admin') }}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

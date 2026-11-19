@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block titulo %}Contacto{% endblock %}
+
+{% block contenido %}
+<section class="seccion" style="border-top:none;">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">Contacto</span>
+        <h1>Escribime</h1>
+        {% if perfil and perfil.email_contacto %}
+            <p>
+                O escribime directo a
+                <a href="mailto:{{ perfil.email_contacto }}" class="resaltado">{{ perfil.email_contacto }}</a>
+            </p>
+        {% endif %}
+    </div>
+
+    <form method="POST" class="formulario">
+        {{ form.hidden_tag() }}
+
+        <div>{{ form.nombre.label }} {{ form.nombre }}</div>
+        <div>{{ form.email.label }} {{ form.email }}</div>
+        <div>{{ form.asunto.label }} {{ form.asunto }}</div>
+        <div>{{ form.mensaje.label }} {{ form.mensaje }}</div>
+
+        {{ form.enviar(class="boton") }}
+    </form>
+
+    <!-- IFRAME (punto 3): mapa de Google Maps, adaptable por la clase iframe-contenedor -->
+    <div class="iframe-contenedor">
+        <iframe src="PEGA_AQUI_EL_LINK_DEL_MAPA" loading="lazy" title="Mapa de ubicación"></iframe>
+    </div>
+</section>
+{% endblock %}

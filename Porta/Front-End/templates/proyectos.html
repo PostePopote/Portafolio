@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block titulo %}Proyectos{% endblock %}
+
+{% block contenido %}
+
+{% if not contenido %}
+    <p class="error">Todavía no hay contenido cargado.</p>
+{% else %}
+<section class="seccion" style="border-top:none;">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">{{ contenido.etiqueta }}</span>
+        <h1>{{ contenido.titulo }}</h1>
+        <p>{{ contenido.descripcion }}</p>
+    </div>
+
+    <!-- Esta grilla pasa de 1 a 2 y a 3 columnas segun el tamano de pantalla -->
+    <div class="grilla-proyectos">
+        {% for p in proyectos %}
+            {% include "tarjeta_proyecto.html" %}
+        {% else %}
+            <p>Todavía no hay proyectos.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

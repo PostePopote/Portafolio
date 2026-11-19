@@ -1,0 +1,352 @@
+/* Fuente local para los titulos */
+@font-face {
+    font-family: "Bebas Neue";
+    src: url("fonts/BebasNeue-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+/* Paleta: azules como base, el rojo se usa solo como acento chico */
+:root {
+    --fondo: #070B14;
+    --tarjeta: #0F1626;
+    --borde: #1E2A44;
+    --texto: #EAF1FB;
+    --texto-suave: #9FB0C8;
+    --azul: #2F6FC0;
+    --azul-claro: #7DB8F0;
+    --rojo: #D14B57;
+    --radio: 8px;
+}
+
+/* Reinicio basico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fondo azul noche con un brillo azul arriba */
+body {
+    background-color: var(--fondo);
+    background-image: radial-gradient(ellipse at top, #12306b66, transparent 60%);
+    background-repeat: no-repeat;
+    color: var(--texto);
+    font-family: "Inter", sans-serif;
+    line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+p { color: var(--texto-suave); }
+
+/* Tipografia */
+h1, h2, h3 {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: normal;
+    line-height: 1.05;
+    text-transform: uppercase;
+}
+h1 { font-size: clamp(2.8rem, 9vw, 5.5rem); }
+h2 { font-size: clamp(2rem, 6vw, 3rem); }
+h3 { font-size: 1.6rem; }
+
+/* Etiquetas chicas con fuente monoespaciada */
+.etiqueta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--azul-claro);
+}
+
+/* Texto resaltado de los titulos, tipo trazo de pincel */
+.resaltado {
+    font-family: "Permanent Marker", "Bebas Neue", cursive;
+    color: var(--azul-claro);
+}
+
+/* Contenedor que centra el contenido */
+.contenedor {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Barra de navegacion */
+.barra { border-bottom: 1px solid var(--borde); }
+
+.barra-contenido {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 0;
+}
+
+.logo { font-family: "Bebas Neue", sans-serif; font-size: 1.8rem; }
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.9rem;
+}
+
+.menu a:hover { color: var(--azul-claro); }
+
+/* Botones */
+.boton {
+    display: inline-block;
+    background-color: var(--azul);
+    color: var(--texto);
+    border: 1px solid var(--azul);
+    border-radius: var(--radio);
+    padding: 12px 22px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.boton:hover { transform: translateY(-2px); filter: brightness(1.2); }
+
+.boton-secundario { background-color: transparent; border-color: var(--azul-claro); }
+
+/* Boton de borrar, aca si uso el rojo */
+.boton-peligro { background-color: transparent; border-color: var(--rojo); color: var(--rojo); }
+.boton-peligro:hover { background-color: var(--rojo); color: var(--texto); }
+
+/* Hero del inicio */
+.hero { display: grid; gap: 32px; padding: 48px 0; }
+
+.hero-etiqueta {
+    display: inline-block;
+    background-color: var(--tarjeta);
+    border: 1px solid var(--borde);
+    padding: 6px 12px;
+    border-radius: var(--radio);
+    margin-bottom: 20px;
+}
+
+.hero h1 { margin-bottom: 20px; }
+.hero p { max-width: 480px; margin-bottom: 28px; }
+
+/* Tarjeta del hero con brillo azul */
+.hero-tarjeta {
+    background-color: var(--tarjeta);
+    border-radius: var(--radio);
+    border-bottom: 3px solid var(--azul-claro);
+    box-shadow: 0 0 40px #2f6fc033;
+    padding: 24px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Secciones */
+.seccion { padding: 48px 0; border-top: 1px solid var(--borde); }
+.seccion-cabecera { margin-bottom: 28px; }
+.seccion-cabecera .etiqueta { display: block; margin-bottom: 8px; }
+
+.sobre-mi { display: grid; gap: 20px; }
+
+/* Items de experiencia y educacion, con linea azul a la izquierda */
+.item-linea {
+    background-color: var(--tarjeta);
+    border-left: 3px solid var(--azul-claro);
+    border-radius: var(--radio);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+/* Habilidades */
+.grilla-habilidades { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+.habilidad {
+    background-color: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Proyectos */
+.grilla-proyectos { display: grid; grid-template-columns: 1fr; gap: 24px; }
+
+.proyecto-card {
+    background-color: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+/* ANIMACION 1: al pasar el mouse la tarjeta sube y brilla en azul */
+.proyecto-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--azul-claro);
+    box-shadow: 0 12px 30px #2f6fc055;
+}
+
+.proyecto-imagen { width: 100%; height: 200px; object-fit: cover; background-color: var(--borde); }
+
+.proyecto-cuerpo {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.proyecto-enlaces { display: flex; gap: 16px; margin-top: auto; font-size: 0.9rem; }
+.proyecto-enlaces a:hover { color: var(--azul-claro); }
+
+.lista-tecnologias { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tecnologia {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    border: 1px solid var(--azul-claro);
+    color: var(--azul-claro);
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+/* Formularios (login, contacto y panel) */
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: var(--tarjeta);
+    border: 1px solid var(--borde);
+    padding: 24px;
+    border-radius: var(--radio);
+}
+
+.formulario-centrado { max-width: 420px; margin: 48px auto; }
+.formulario label { display: block; font-size: 0.9rem; margin-bottom: 4px; }
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+    width: 100%;
+    background-color: var(--fondo);
+    color: var(--texto);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+}
+
+.formulario input:focus,
+.formulario textarea:focus,
+.formulario select:focus { outline: none; border-color: var(--azul-claro); }
+
+.formulario textarea { min-height: 140px; resize: vertical; }
+.formulario select[multiple] { min-height: 140px; }
+.formulario input[type="checkbox"] { width: auto; }
+
+/* Boton de enviar de los formularios */
+.formulario input[type="submit"] {
+    width: auto;
+    background-color: var(--azul);
+    border-color: var(--azul);
+    cursor: pointer;
+}
+.formulario input[type="submit"]:hover { filter: brightness(1.2); }
+
+.campo-check { display: flex; align-items: center; gap: 10px; }
+.campo-check label { margin: 0; }
+.error-campo { color: var(--rojo); font-size: 0.8rem; }
+
+/* Mensajes de error y exito */
+.error, .exito {
+    padding: 12px 16px;
+    border-radius: var(--radio);
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: var(--texto);
+}
+.error { background-color: #d14b5722; border: 1px solid var(--rojo); }
+.exito { background-color: #2f6fc022; border: 1px solid var(--azul-claro); }
+
+/* Iframe adaptable, mantiene la proporcion 16:9 */
+.iframe-contenedor {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: var(--radio);
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+.iframe-contenedor iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Panel de administracion */
+.tabla-scroll { overflow-x: auto; }
+
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--tarjeta);
+}
+
+.tabla-admin th, .tabla-admin td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--borde);
+    font-size: 0.9rem;
+}
+
+.panel-acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+.acciones-fila { display: flex; align-items: center; gap: 12px; }
+
+/* Pie de pagina */
+.pie {
+    border-top: 1px solid var(--borde);
+    padding: 24px 0;
+    margin-top: 48px;
+    text-align: center;
+}
+
+/* ANIMACION 2: el contenido del hero aparece de a poco al cargar la pagina */
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero > * { animation: aparecer 0.8s ease-out both; }
+.hero > *:nth-child(2) { animation-delay: 0.2s; }
+
+/* TABLET, desde 768px */
+@media (min-width: 768px) {
+    .contenedor { padding: 0 32px; }
+    .grilla-habilidades { grid-template-columns: repeat(2, 1fr); }
+    .grilla-proyectos { grid-template-columns: repeat(2, 1fr); }
+    .sobre-mi { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+/* ESCRITORIO, desde 1024px */
+@media (min-width: 1024px) {
+    .hero { grid-template-columns: 1.2fr 1fr; align-items: center; padding: 80px 0; }
+    .grilla-habilidades { grid-template-columns: repeat(3, 1fr); }
+    .grilla-proyectos { grid-template-columns: repeat(3, 1fr); }
+    .seccion { padding: 72px 0; }
+}

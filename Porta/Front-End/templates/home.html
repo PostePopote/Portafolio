@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+
+{% if not contenido or not perfil %}
+    <p class="error">Todavía no hay contenido cargado.</p>
+{% else %}
+
+<!-- Hero, la animacion de aparicion esta en el CSS (.hero) -->
+<section class="hero">
+    <div>
+        <span class="hero-etiqueta etiqueta">{{ contenido.etiqueta_hero }}</span>
+
+        <!-- Separo el titulo por la barra para pintar la segunda parte en rojo -->
+        {% set partes = contenido.titulo_hero.split("|") %}
+        <h1>
+            {{ partes[0] }}
+            {% if partes|length > 1 %}<span class="resaltado">{{ partes[1] }}</span>{% endif %}
+        </h1>
+
+        <p>{{ contenido.descripcion_hero }}</p>
+        <a href="{{ url_for('proyectos') }}" class="boton">Ver mis proyectos</a>
+    </div>
+
+    <div class="hero-tarjeta">
+        <span class="etiqueta">{{ contenido.texto_tarjeta_superior }}</span>
+        <div>
+            <h3>{{ contenido.titulo_tarjeta }}</h3>
+            <p>{{ contenido.descripcion_tarjeta }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Sobre mi -->
+<section class="seccion">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">{{ contenido.etiqueta_sobre_mi }}</span>
+        <h2>{{ contenido.titulo_sobre_mi }}</h2>
+    </div>
+    <div class="sobre-mi">
+        <p>{{ contenido.descripcion_sobre_mi }}</p>
+        <div>
+            <h3>{{ perfil.nombre }}</h3>
+            <p class="etiqueta">{{ perfil.titulo_profesional }}</p>
+            {% if perfil.ruta_cv %}
+                <!-- Descarga del CV en PDF -->
+                <a href="{{ url_for('static', filename=perfil.ruta_cv) }}" class="boton" download>
+                    <i class="fa-solid fa-download"></i> Descargar CV
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Experiencia, solo se muestra si hay datos cargados -->
+{% if experiencias %}
+<section class="seccion">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">02 / Experiencia</span>
+        <h2>{{ contenido.titulo_experiencia }}</h2>
+    </div>
+    {% for e in experiencias %}
+        <article class="item-linea">
+            <span class="etiqueta">
+                {{ e.fecha_inicio.strftime("%m/%Y") if e.fecha_inicio }} -
+                {{ "Actualidad" if e.actual else (e.fecha_fin.strftime("%m/%Y") if e.fecha_fin) }}
+            </span>
+            <h3>{{ e.puesto }}</h3>
+            <p class="etiqueta">{{ e.empresa }}</p>
+            <p>{{ e.descripcion }}</p>
+        </article>
+    {% endfor %}
+</section>
+{% endif %}
+
+<!-- Educacion -->
+<section class="seccion">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">03 / Educación</span>
+        <h2>{{ contenido.titulo_educacion }}</h2>
+    </div>
+    {% for est in estudios %}
+        <article class="item-linea">
+            <span class="etiqueta">{{ est.institucion }}</span>
+            <h3>{{ est.titulo }}</h3>
+            <p>{{ est.descripcion }}</p>
+        </article>
+    {% endfor %}
+</section>
+
+<!-- Habilidades -->
+<section class="seccion">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">04 / Skills</span>
+        <h2>{{ contenido.titulo_habilidades }}</h2>
+    </div>
+    <div class="grilla-habilidades">
+        {% for h in habilidades %}
+            <div class="habilidad">
+                <span>{{ h.nombre }}</span>
+                <span class="etiqueta">{{ h.nivel }}</span>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Proyectos destacados -->
+<section class="seccion">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">05 / Proyectos</span>
+        <h2>{{ contenido.titulo_proyectos }}</h2>
+    </div>
+    <div class="grilla-proyectos">
+        {% for p in destacados %}
+            {% include "tarjeta_proyecto.html" %}
+        {% else %}
+            <p>Todavía no hay proyectos destacados.</p>
+        {% endfor %}
+    </div>
+    <p style="margin-top:24px;">
+        <a href="{{ url_for('proyectos') }}" class="boton boton-secundario">Ver todos</a>
+    </p>
+</section>
+
+<!-- Contacto -->
+<section class="seccion">
+    <div class="seccion-cabecera">
+        <span class="etiqueta">06 / Contacto</span>
+        <h2>{{ contenido.titulo_contacto }}</h2>
+        <p>{{ contenido.descripcion_contacto }}</p>
+    </div>
+    <a href="{{ url_for('contacto') }}" class="boton">Escribime</a>
+</section>
+
+{% endif %}
+
+{% endblock %}

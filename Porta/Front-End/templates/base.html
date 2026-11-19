@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Mi Portafolio{% endblock %}</title>
+
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <!-- Iconos de FontAwesome, no hace falta bajar nada -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Hoja de estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Barra de navegacion, se repite en todas las paginas -->
+    <header class="barra">
+        <div class="contenedor barra-contenido">
+            <a href="{{ url_for('home') }}" class="logo">
+                {{ perfil.nombre if perfil else "Mi portafolio" }}.
+            </a>
+
+            <nav class="menu">
+                <a href="{{ url_for('home') }}">Inicio</a>
+                <a href="{{ url_for('proyectos') }}">Proyectos</a>
+                <a href="{{ url_for('contacto') }}">Contacto</a>
+
+                <!-- Si hay sesion iniciada muestro las opciones de admin -->
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('editar_home') }}">Editar</a>
+                    <a href="{{ url_for('logout') }}" class="boton">Salir</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="boton">Ingresar</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        <!-- Mensajes flash, la categoria es "error" o "exito" y define el estilo -->
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% for categoria, texto in mensajes %}
+                <p class="{{ categoria }}">{{ texto }}</p>
+            {% endfor %}
+        {% endwith %}
+
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <!-- Pie de pagina con las redes sociales de la base de datos -->
+    <footer class="pie">
+        <div class="contenedor">
+            <ul class="menu" style="justify-content:center;">
+                {% for r in redes %}
+                    <li>
+                        <a href="{{ r.url }}" target="_blank" rel="noopener">
+                            {% if r.icono %}<i class="{{ r.icono }}"></i>{% endif %}
+                            {{ r.nombre }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <p class="etiqueta">{{ perfil.nombre if perfil else "" }} - Portafolio</p>
+        </div>
+    </footer>
+
+</body>
+</html>

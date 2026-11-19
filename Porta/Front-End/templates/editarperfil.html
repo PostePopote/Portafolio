@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo %}
+
+{% block titulo %}Editar perfil{% endblock %}
+
+{% block contenido %}
+<section class="seccion" style="border-top:none;">
+    <h1>Editar perfil</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="formulario">
+        {{ form.hidden_tag() }}
+
+        {% for f in form if f.type not in ["CSRFTokenField", "SubmitField"] %}
+            {{ campo(f) }}
+        {% endfor %}
+
+        {{ form.enviar(class="boton") }}
+        <a href="{{ url_for('admin') }}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}
