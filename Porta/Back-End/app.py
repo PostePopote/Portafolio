@@ -13,7 +13,6 @@ try:
 except ImportError:
     config = None
 
-
 def leer(nombre, por_defecto=None):
     # Primero busco en el entorno (Render), si no esta uso config.py (mi PC)
     valor = os.getenv(nombre)
@@ -60,12 +59,10 @@ login_manager.init_app(app)
 # Si alguien entra a una pagina protegida sin sesion, lo mando al login
 login_manager.login_view = "login"
 
-
 # Flask-Login usa esta funcion para recuperar al usuario de la sesion
 @login_manager.user_loader
 def cargar_usuario(id_usuario):
     return db.session.get(Usuario, int(id_usuario))
-
 
 # Esta funcion hace que perfil y redes esten disponibles en TODOS los templates
 @app.context_processor
@@ -75,11 +72,9 @@ def datos_globales():
         "redes": RedSocial.query.filter_by(visible=True).order_by(RedSocial.orden).all()
     }
 
-
 # Convierte un titulo en un slug: "Mi Proyecto" -> "mi-proyecto"
 def crear_slug(texto):
     return texto.lower().strip().replace(" ", "-")
-
 
 # Guarda un archivo subido dentro de static y devuelve la ruta relativa
 def guardar_archivo(archivo, carpeta):
@@ -91,7 +86,6 @@ def guardar_archivo(archivo, carpeta):
     os.makedirs(destino, exist_ok=True)
     archivo.save(os.path.join(destino, nombre))
     return f"{carpeta}/{nombre}"
-
 
 # Rutas de las paginas
 @app.route("/")
@@ -128,7 +122,6 @@ def contacto():
 
     return render_template("contacto.html", form=form)
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # Si ya inicio sesion no hace falta mostrar el login
@@ -152,13 +145,11 @@ def login():
 
     return render_template("login.html", form=form)
 
-
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("home"))
-
 
 # Panel principal de administracion
 @app.route("/admin")
@@ -166,7 +157,6 @@ def logout():
 def admin():
     lista = Proyecto.query.order_by(Proyecto.orden).all()
     return render_template("admin.html", proyectos=lista)
-
 
 # Esta misma funcion sirve para crear (sin id) y para editar (con id)
 @app.route("/admin/proyecto/nuevo", methods=["GET", "POST"])
@@ -241,7 +231,6 @@ def editar_proyecto(id_proyecto=None):
 
     return render_template("editarproyecto.html", form=form, proyecto=proyecto)
 
-
 # El borrado va por POST para que no se pueda disparar con solo abrir un link
 @app.route("/admin/proyecto/<int:id_proyecto>/borrar", methods=["POST"])
 @login_required
@@ -250,7 +239,6 @@ def borrar_proyecto(id_proyecto):
     proyecto.eliminar()
     flash("Proyecto eliminado", "exito")
     return redirect(url_for("admin"))
-
 
 # Editar los textos del inicio
 @app.route("/editar-home", methods=["GET", "POST"])
@@ -267,7 +255,6 @@ def editar_home():
         return redirect(url_for("admin"))
 
     return render_template("editarhome.html", form=form)
-
 
 # Editar datos personales y subir el CV
 @app.route("/editar-perfil", methods=["GET", "POST"])

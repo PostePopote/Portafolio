@@ -6,11 +6,12 @@ venv/
 pyvenv.cfg
 
 # Datos privados
-config.py  
-cargarcontenido.py
-cargartecnologia.py
-admin.py
-verconexcion.py
+Back-End/config.py  
+Back-End/admin.py
+Back-End/cargarcontenido.py
+Back-End/cargartecnologia.py
+Back-End/verconexion.py
+Back-End/actualizar_cv.py
 *.sql
 
 # Generados
