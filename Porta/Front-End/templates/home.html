@@ -1,19 +1,27 @@
+{#
+PAGINA DE INICIO
+Hereda de base.html (menu y pie) y solo escribe su contenido.
+Los datos vienen de la ruta home() de app.py:
+contenido (textos), experiencias, estudios, habilidades y destacados.
+#}
 {% extends "base.html" %}
 
 {% block titulo %}Inicio{% endblock %}
 
 {% block contenido %}
 
+{# Si todavia no se cargaron los datos en la base, aviso en vez de dar error #}
 {% if not contenido or not perfil %}
     <p class="error">Todavía no hay contenido cargado.</p>
 {% else %}
 
-<!-- Hero, la animacion de aparicion esta en el CSS (.hero) -->
+{# SECCION PRINCIPAL (hero). La animacion de aparicion esta en style.css (.hero) #}
 <section class="hero">
     <div>
         <span class="hero-etiqueta etiqueta">{{ contenido.etiqueta_hero }}</span>
 
-        <!-- Separo el titulo por la barra para pintar la segunda parte en rojo -->
+        {# El titulo se guarda con una barra | que separa la parte normal de la parte
+        en color. Con split la divido en dos y pinto la segunda con la clase resaltado #}
         {% set partes = contenido.titulo_hero.split("|") %}
         <h1>
             {{ partes[0] }}
@@ -24,6 +32,7 @@
         <a href="{{ url_for('proyectos') }}" class="boton">Ver mis proyectos</a>
     </div>
 
+    {# Tarjeta decorativa de la derecha, con textos editables desde el panel #}
     <div class="hero-tarjeta">
         <span class="etiqueta">{{ contenido.texto_tarjeta_superior }}</span>
         <div>
@@ -33,7 +42,7 @@
     </div>
 </section>
 
-<!-- Sobre mi -->
+{# SOBRE MI: texto desde contenido_home y datos personales desde perfil #}
 <section class="seccion">
     <div class="seccion-cabecera">
         <span class="etiqueta">{{ contenido.etiqueta_sobre_mi }}</span>
@@ -44,8 +53,9 @@
         <div>
             <h3>{{ perfil.nombre }}</h3>
             <p class="etiqueta">{{ perfil.titulo_profesional }}</p>
+            {# El boton del CV solo aparece si hay un PDF cargado (campo ruta_cv).
+            El atributo download hace que el navegador lo descargue #}
             {% if perfil.ruta_cv %}
-                <!-- Descarga del CV en PDF -->
                 <a href="{{ url_for('static', filename=perfil.ruta_cv) }}" class="boton" download>
                     <i class="fa-solid fa-download"></i> Descargar CV
                 </a>
@@ -54,15 +64,17 @@
     </div>
 </section>
 
-<!-- Experiencia, solo se muestra si hay datos cargados -->
+{# EXPERIENCIA: solo se muestra la seccion si hay datos cargados #}
 {% if experiencias %}
 <section class="seccion">
     <div class="seccion-cabecera">
         <span class="etiqueta">02 / Experiencia</span>
         <h2>{{ contenido.titulo_experiencia }}</h2>
     </div>
+    {# for recorre la lista que mando la ruta, una tarjeta por cada experiencia #}
     {% for e in experiencias %}
         <article class="item-linea">
+            {# strftime da formato a la fecha (mes/ano). Si es el trabajo actual escribo Actualidad #}
             <span class="etiqueta">
                 {{ e.fecha_inicio.strftime("%m/%Y") if e.fecha_inicio }} -
                 {{ "Actualidad" if e.actual else (e.fecha_fin.strftime("%m/%Y") if e.fecha_fin) }}
@@ -75,7 +87,7 @@
 </section>
 {% endif %}
 
-<!-- Educacion -->
+{# EDUCACION: se recorre la lista estudios (tabla educacion) #}
 <section class="seccion">
     <div class="seccion-cabecera">
         <span class="etiqueta">03 / Educación</span>
@@ -90,7 +102,8 @@
     {% endfor %}
 </section>
 
-<!-- Habilidades -->
+{# HABILIDADES: tecnicas y blandas, de la tabla habilidades.
+La grilla pasa de 1 a 2 y a 3 columnas segun el tamano de pantalla (en style.css) #}
 <section class="seccion">
     <div class="seccion-cabecera">
         <span class="etiqueta">04 / Skills</span>
@@ -106,16 +119,19 @@
     </div>
 </section>
 
-<!-- Proyectos destacados -->
+{# PROYECTOS DESTACADOS: hasta 3, los marcados como destacados en el panel #}
 <section class="seccion">
     <div class="seccion-cabecera">
         <span class="etiqueta">05 / Proyectos</span>
         <h2>{{ contenido.titulo_proyectos }}</h2>
     </div>
     <div class="grilla-proyectos">
+        {# include pega la tarjeta de tarjeta_proyecto.html, y la usa tambien la pagina
+        de proyectos, asi no repito codigo. Adentro la variable p es el proyecto actual #}
         {% for p in destacados %}
             {% include "tarjeta_proyecto.html" %}
         {% else %}
+            {# El else del for se muestra solo si la lista esta vacia #}
             <p>Todavía no hay proyectos destacados.</p>
         {% endfor %}
     </div>
@@ -124,7 +140,7 @@
     </p>
 </section>
 
-<!-- Contacto -->
+{# CONTACTO: invita a escribir y lleva a la pagina del formulario #}
 <section class="seccion">
     <div class="seccion-cabecera">
         <span class="etiqueta">06 / Contacto</span>
@@ -134,6 +150,7 @@
     <a href="{{ url_for('contacto') }}" class="boton">Escribime</a>
 </section>
 
+{# Cierre del if del principio (si habia contenido cargado) #}
 {% endif %}
 
 {% endblock %}

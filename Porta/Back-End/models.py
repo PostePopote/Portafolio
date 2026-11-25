@@ -4,9 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db import db
 
 
-# Clase base que comparten los modelos. Contiene métodos comunes
-# para guardar, eliminar y mostrar información de los registros.
-# Al ser abstracta, no genera una tabla propia en la base de datos.
+# PILAR 1, ABSTRACCION: esta clase es un molde. Dice lo que cualquier modelo
+# tiene que poder hacer (resumen, guardar, eliminar) sin decir como es cada tabla.
+# Al ser abstracta (__abstract__ = True) no genera ninguna tabla.
 class ModeloBase(db.Model):
     __abstract__ = True
 
@@ -41,8 +41,8 @@ proyecto_tecnologias = db.Table(
 )
 
 
-# Usuario hereda de ModeloBase para utilizar sus métodos y de UserMixin
-# para poder trabajar con el sistema de inicio de sesión de Flask-Login.
+# PILAR 2, HERENCIA: Usuario hereda de ModeloBase (guardar, eliminar) y de
+# UserMixin (login). Lo mismo hacen todas las demas clases de este archivo.
 class Usuario(UserMixin, ModeloBase):
     __tablename__ = "usuarios"
 
@@ -50,8 +50,9 @@ class Usuario(UserMixin, ModeloBase):
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
 
-    # La contraseña se almacena como un hash y no como texto plano.
-    # El guion bajo indica que es un atributo de uso interno.
+    # PILAR 3, ENCAPSULAMIENTO: el hash se guarda en un atributo privado
+    # (_password_hash). Desde afuera la contrasena solo se puede escribir
+    # (con password) y comprobar (con verificar_password), nunca leer.
     _password_hash = db.Column("password_hash", db.String(255), nullable=False)
 
     fecha_creacion = db.Column(db.DateTime, server_default=db.func.now())
@@ -75,7 +76,8 @@ class Usuario(UserMixin, ModeloBase):
     def verificar_password(self, texto_plano):
         return check_password_hash(self._password_hash, texto_plano)
 
-    # Devuelve un resumen con el nombre y el correo del usuario.
+    # PILAR 4, POLIMORFISMO: todas las clases tienen resumen(), pero cada una
+    # lo hace distinto segun sus datos.
     def resumen(self):
         return f"{self.username} ({self.email})"
 

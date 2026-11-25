@@ -1,21 +1,33 @@
+{#
+PAGINA DE PROYECTOS
+Muestra todos los proyectos publicados. Esta pagina es la que mejor
+muestra el diseño responsive: la grilla pasa de 1 a 2 y a 3 columnas
+segun el tamano de la pantalla (celular, tablet y escritorio).
+Los datos vienen de la ruta proyectos() de app.py:
+proyectos (la lista) y contenido (textos de la cabecera).
+#}
 {% extends "base.html" %}
 
 {% block titulo %}Proyectos{% endblock %}
 
 {% block contenido %}
 
+{# Si no hay contenido cargado en la base, aviso en vez de dar error #}
 {% if not contenido %}
     <p class="error">Todavía no hay contenido cargado.</p>
 {% else %}
 <section class="seccion" style="border-top:none;">
+    {# Cabecera con los textos de la tabla contenido_proyectos #}
     <div class="seccion-cabecera">
         <span class="etiqueta">{{ contenido.etiqueta }}</span>
         <h1>{{ contenido.titulo }}</h1>
         <p>{{ contenido.descripcion }}</p>
     </div>
 
-    <!-- Esta grilla pasa de 1 a 2 y a 3 columnas segun el tamano de pantalla -->
+    {# RESPONSIVE: la clase grilla-proyectos tiene 1 columna en celular, 2 en
+    tablet (desde 768px) y 3 en escritorio (desde 1024px). Esta en style.css #}
     <div class="grilla-proyectos">
+        {# Una tarjeta por proyecto, reutilizando tarjeta_proyecto.html #}
         {% for p in proyectos %}
             {% include "tarjeta_proyecto.html" %}
         {% else %}

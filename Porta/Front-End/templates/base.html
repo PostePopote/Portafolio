@@ -1,26 +1,37 @@
+{#
+PLANTILLA BASE (Jinja2)
+Todas las paginas heredan de este archivo con extends.
+Aca va lo que se repite en todas: el head, el menu y el pie de pagina.
+Cada pagina completa solo los bloques "block" que le tocan. #}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    {# Necesario para que la pagina sea responsive en el celular #}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {# Cada pagina puede cambiar el titulo, si no usa este por defecto #}
     <title>{% block titulo %}Mi Portafolio{% endblock %}</title>
 
-    <!-- Fuentes de Google Fonts -->
+    {# FUENTES DE GOOGLE FONTS: Inter (texto) y JetBrains Mono (etiquetas).
+    La fuente local (Bebas Neue) se carga en style.css con @font-face #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
 
-    <!-- Iconos de FontAwesome, no hace falta bajar nada -->
+    {# ICONOS DE FONTAWESOME: se cargan por CDN, no hace falta bajar nada #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Hoja de estilos -->
+    {# Hoja de estilos propia. url_for busca el archivo dentro de la carpeta static #}
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <!-- Barra de navegacion, se repite en todas las paginas -->
+    {# BARRA DE NAVEGACION: se repite en todas las paginas #}
     <header class="barra">
         <div class="contenedor barra-contenido">
+            {# perfil viene del context_processor de app.py, por eso esta en todas las paginas.
+            Si todavia no hay perfil cargado muestra un texto por defecto #}
             <a href="{{ url_for('home') }}" class="logo">
                 {{ perfil.nombre if perfil else "Mi portafolio" }}.
             </a>
@@ -30,9 +41,10 @@
                 <a href="{{ url_for('proyectos') }}">Proyectos</a>
                 <a href="{{ url_for('contacto') }}">Contacto</a>
 
-                <!-- Si hay sesion iniciada muestro las opciones de admin -->
+                {# current_user lo da Flask-Login. Si hay sesion iniciada muestro
+                el panel de admin y Salir, si no muestro Ingresar #}
                 {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('editar_home') }}">Editar</a>
+                    <a href="{{ url_for('admin') }}">Panel</a>
                     <a href="{{ url_for('logout') }}" class="boton">Salir</a>
                 {% else %}
                     <a href="{{ url_for('login') }}" class="boton">Ingresar</a>
@@ -42,23 +54,28 @@
     </header>
 
     <main class="contenedor">
-        <!-- Mensajes flash, la categoria es "error" o "exito" y define el estilo -->
+        {# MENSAJES FLASH: son los avisos que se mandan con flash() en app.py.
+        La categoria ("error" o "exito") se usa como clase CSS para darle el color #}
         {% with mensajes = get_flashed_messages(with_categories=true) %}
             {% for categoria, texto in mensajes %}
                 <p class="{{ categoria }}">{{ texto }}</p>
             {% endfor %}
         {% endwith %}
 
+        {# Aca cada pagina pone su contenido #}
         {% block contenido %}{% endblock %}
     </main>
 
-    <!-- Pie de pagina con las redes sociales de la base de datos -->
+    {# PIE DE PAGINA: las redes sociales vienen de la base de datos
+    (tabla redes_sociales) gracias al context_processor #}
     <footer class="pie">
         <div class="contenedor">
             <ul class="menu" style="justify-content:center;">
                 {% for r in redes %}
                     <li>
+                        {# target blank abre en otra pestana, noopener es por seguridad #}
                         <a href="{{ r.url }}" target="_blank" rel="noopener">
+                            {# El icono se guarda en la base como clase de FontAwesome #}
                             {% if r.icono %}<i class="{{ r.icono }}"></i>{% endif %}
                             {{ r.nombre }}
                         </a>
